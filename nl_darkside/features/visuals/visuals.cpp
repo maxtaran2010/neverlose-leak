@@ -234,26 +234,26 @@ void c_visuals::handle_players( ) {
 			const c_color flag_color = c_color{ 1.f, 1.f, 1.f, 1.f };
 			float flag_offset = 2.f;
 
-			if ( g_cfg->visuals.m_player_esp.m_flags & g_cfg->visuals.m_player_esp.FLAG_MONEY ) {
+			if ( g_cfg->visuals.m_player_esp.m_flags & 1 ) {  // FLAG_MONEY
 				g_render->text( vec3_t( bbox.x + bbox.width + 3.f, bbox.y + flag_offset ), c_color( 0.f, 1.f, 0.f, 1.f ), font_flags_outline,
 					g_render->fonts.onetap_pixel, "$" + std::to_string( player_info.m_money ), g_render->fonts.onetap_pixel->FontSize );
 				flag_offset += 10.f;
 			}
 
-			if ( ( g_cfg->visuals.m_player_esp.m_flags & g_cfg->visuals.m_player_esp.FLAG_ARMOR ) && player_info.m_armor > 0 ) {
+			if ( ( g_cfg->visuals.m_player_esp.m_flags & 2 ) && player_info.m_armor > 0 ) {  // FLAG_ARMOR
 				std::string armor_text = player_info.m_has_helmet ? "HK" : "K";
 				g_render->text( vec3_t( bbox.x + bbox.width + 3.f, bbox.y + flag_offset ), flag_color, font_flags_outline,
 					g_render->fonts.onetap_pixel, armor_text, g_render->fonts.onetap_pixel->FontSize );
 				flag_offset += 10.f;
 			}
 
-			if ( ( g_cfg->visuals.m_player_esp.m_flags & g_cfg->visuals.m_player_esp.FLAG_KIT ) && player_info.m_has_defuser ) {
+			if ( ( g_cfg->visuals.m_player_esp.m_flags & 4 ) && player_info.m_has_defuser ) {  // FLAG_KIT
 				g_render->text( vec3_t( bbox.x + bbox.width + 3.f, bbox.y + flag_offset ), c_color( 0.f, 1.f, 0.f, 1.f ), font_flags_outline,
 					g_render->fonts.onetap_pixel, "KIT", g_render->fonts.onetap_pixel->FontSize );
 				flag_offset += 10.f;
 			}
 
-			if ( ( g_cfg->visuals.m_player_esp.m_flags & g_cfg->visuals.m_player_esp.FLAG_ZOOM ) && player_info.m_is_scoped ) {
+			if ( ( g_cfg->visuals.m_player_esp.m_flags & 8 ) && player_info.m_is_scoped ) {  // FLAG_ZOOM
 				g_render->text( vec3_t( bbox.x + bbox.width + 3.f, bbox.y + flag_offset ), c_color( 1.f, 1.f, 0.f, 1.f ), font_flags_outline,
 					g_render->fonts.onetap_pixel, "ZOOM", g_render->fonts.onetap_pixel->FontSize );
 				flag_offset += 10.f;

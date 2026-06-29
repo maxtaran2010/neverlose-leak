@@ -287,12 +287,13 @@ void c_rage_bot::nl_resolve( int handle, c_cs_player_pawn* enemy, lag_record_t* 
 
     bool is_taser = wdata->m_weapon_type( ) == WEAPONTYPE_TASER;
 
+    vec3_t head_world = rec->m_bone_data[hd.m_num_bone].get_origin();
+
     for ( int i = 0; i < branch_count; i++ ) {
         float cy = std::cosf( ( lby + branches[i] ) * ( (float)_pi / 180.f ) );
         float sy = std::sinf( ( lby + branches[i] ) * ( (float)_pi / 180.f ) );
 
-        matrix3x4_t mat = g_math->transform_to_matrix( rec->m_bone_data[hd.m_num_bone] );
-        vec3_t head{ mat[0][3] + cy * 2.f, mat[1][3] + sy * 2.f, mat[2][3] };
+        vec3_t head{ head_world.x + cy * 2.f, head_world.y + sy * 2.f, head_world.z };
 
         penetration_data_t pen{};
         if ( !g_auto_wall->fire_bullet( eye_pos, head, enemy, wdata, pen, is_taser ) )
@@ -313,8 +314,7 @@ void c_rage_bot::nl_resolve( int handle, c_cs_player_pawn* enemy, lag_record_t* 
             float cy     = std::cosf( angle * ( (float)_pi / 180.f ) );
             float sy     = std::sinf( angle * ( (float)_pi / 180.f ) );
 
-            matrix3x4_t mat = g_math->transform_to_matrix( rec->m_bone_data[hd.m_num_bone] );
-            vec3_t head{ mat[0][3] + cy * 2.f, mat[1][3] + sy * 2.f, mat[2][3] };
+            vec3_t head{ head_world.x + cy * 2.f, head_world.y + sy * 2.f, head_world.z };
 
             penetration_data_t pen{};
             if ( !g_auto_wall->fire_bullet( eye_pos, head, enemy, wdata, pen, is_taser ) )
