@@ -179,7 +179,7 @@ HRESULT hooks::present::hk_present( IDXGISwapChain* swap_chain, unsigned int syn
         g_world->skybox( );
         g_world->exposure( g_ctx->m_local_pawn );
         g_render->update_background_drawlist( ImGui::GetBackgroundDrawList( ) );
-        g_visuals->on_paint( );   // NL visuals (bbox + skeleton + head dot)
+        g_visuals->on_present( );
         g_world->draw_scope_overlay( );
         g_menu->draw( );
     }

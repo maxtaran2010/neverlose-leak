@@ -1,5 +1,5 @@
 #pragma once
-#include "../../darkside.hpp"
+#include "darkside.hpp"
 
 // NL no-spread reconstruction
 // "ts_accuracy_set_m" @ 0x1a9371a6758 — zeros m_fAccuracyPenalty

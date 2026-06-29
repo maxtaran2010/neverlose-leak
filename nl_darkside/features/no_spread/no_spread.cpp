@@ -1,4 +1,5 @@
 #include "no_spread.hpp"
+#include "nl_config.hpp"
 #include "valve/schema/schema.hpp"
 
 // ts_accuracy_set_m @ NL rdata 0x1a9371a6758

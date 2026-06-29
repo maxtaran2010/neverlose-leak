@@ -1,5 +1,5 @@
 #pragma once
-#include "../../darkside.hpp"
+#include "darkside.hpp"
 #include "features/auto_wall/auto_wall.hpp"
 #include "features/eng_pred/eng_pred.hpp"
 
@@ -12,8 +12,8 @@ struct lag_record_t {
     vec3_t            m_origin{};
     c_cs_player_pawn* m_pawn{};
     c_skeleton_instace* m_skeleton = nullptr;
-    c_bone_data       m_bone_data[128];
-    c_bone_data       m_bone_data_backup[128];
+    matrix2x4_t       m_bone_data[128];
+    matrix2x4_t       m_bone_data_backup[128];
     float             m_simulation_time{};
     vec3_t            m_vec_mins{};
     vec3_t            m_vec_maxs{};
@@ -148,7 +148,7 @@ class c_rage_bot {
     vec3_t        get_removed_aim_punch_angle( c_cs_player_pawn* local_player );
 
     // NL_GetScaledValue @ 0x1a936EC5D10 mode 1: radius = base / sqrt(dist+1)
-    float nl_point_radius( const vec3_t& eye_pos, const vec3_t& center, float hitbox_radius );
+    float nl_point_radius( vec3_t eye_pos, vec3_t center, float hitbox_radius );
     bool  multi_points( lag_record_t* rec, int hitbox, std::vector<aim_point_t>& out );
 
     // NL_ApplySpreadCorr @ 0x1a936DFAB80: pre-rotate aim to cancel engine spread

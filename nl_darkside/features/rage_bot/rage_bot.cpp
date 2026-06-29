@@ -1,4 +1,5 @@
 #include "rage_bot.hpp"
+#include "nl_config.hpp"
 #include "entity_system/entity.hpp"
 #include "../movement/movement.hpp"
 
@@ -135,9 +136,10 @@ vec3_t c_rage_bot::get_removed_aim_punch_angle( c_cs_player_pawn* local_player )
 // Points generated in bone-local space, transformed by the record's bone matrix.
 // Radius shrinks with distance: base/sqrt(dist+1)  (NL_GetScaledValue mode 1)
 
-float c_rage_bot::nl_point_radius( const vec3_t& eye_pos, const vec3_t& center,
+float c_rage_bot::nl_point_radius( vec3_t eye_pos, vec3_t center,
                                    float hitbox_radius ) {
-    float dist = center.dist( eye_pos );
+    float dx = center.x - eye_pos.x, dy = center.y - eye_pos.y, dz = center.z - eye_pos.z;
+    float dist = sqrtf( dx*dx + dy*dy + dz*dz );
     float r    = nl_cfg.rage_bot.m_multipoint_base / std::sqrtf( dist + 1.f );
     if ( r < 0.f )                     r = 0.f;
     if ( r > hitbox_radius * 0.95f )   r = hitbox_radius * 0.95f;
@@ -159,12 +161,10 @@ bool c_rage_bot::multi_points( lag_record_t* rec, int hitbox,
     auto ld = g_prediction->get_local_data( );
     if ( !ld ) return false;
 
-    // Use stored bone matrix for the record, not the live skeleton
-    matrix3x4_t mat = g_math->transform_to_matrix( rec->m_bone_data[hd.m_num_bone] );
-
+    // World bone position from stored matrix2x4_t cache
+    vec3_t bone_world  = rec->m_bone_data[hd.m_num_bone].get_origin();
     vec3_t local_center = ( hd.m_mins + hd.m_maxs ) * 0.5f;
-    vec3_t world_center;
-    g_math->vector_transform( local_center, mat, world_center );
+    vec3_t world_center = bone_world + local_center;
 
     out.emplace_back( world_center, hitbox, true );   // center — preferred
 
@@ -175,28 +175,20 @@ bool c_rage_bot::multi_points( lag_record_t* rec, int hitbox,
     if ( radius <= 0.f ) return true;
 
     // Raw bone origin (backup)
-    out.emplace_back( vec3_t{ mat[0][3], mat[1][3], mat[2][3] }, hitbox );
+    out.emplace_back( bone_world, hitbox );
 
-    // Cardinal ring — bone-local offsets, then transform
+    // Cardinal ring — world-space offsets around center
     const vec3_t offsets[4] = {
         { radius, 0.f, 0.f }, { -radius, 0.f, 0.f },
         { 0.f, radius, 0.f }, { 0.f, -radius, 0.f }
     };
-    for ( const auto& off : offsets ) {
-        vec3_t local_pt = local_center + off;
-        vec3_t world_pt;
-        g_math->vector_transform( local_pt, mat, world_pt );
-        out.emplace_back( world_pt, hitbox );
-    }
+    for ( const auto& off : offsets )
+        out.emplace_back( world_center + off, hitbox );
 
     // Head gets top/bottom pair
     if ( hitbox == HITBOX_HEAD ) {
-        for ( float sign : { 1.f, -1.f } ) {
-            vec3_t local_pt = local_center + vec3_t{ 0.f, 0.f, sign * radius };
-            vec3_t world_pt;
-            g_math->vector_transform( local_pt, mat, world_pt );
-            out.emplace_back( world_pt, hitbox );
-        }
+        for ( float sign : { 1.f, -1.f } )
+            out.emplace_back( world_center + vec3_t{ 0.f, 0.f, sign * radius }, hitbox );
     }
 
     return true;

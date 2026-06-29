@@ -1,5 +1,5 @@
 #pragma once
-#include "../../darkside.hpp"
+#include "darkside.hpp"
 
 // movement.hpp — NL bhop + original darkside auto_stop / auto_strafe / movement_fix
 

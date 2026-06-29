@@ -1,5 +1,5 @@
 #pragma once
-#include "../../darkside.hpp"
+#include "darkside.hpp"
 
 // NL anti-aim reconstruction — sub_1A936EDA520 (1369 bytes, 0 callers)
 // Identified by: heavy XMM register use, only unique callee sub_1A936DFB0B0 (jitter LUT),
@@ -13,8 +13,8 @@
 //         input_history[1+].view_angles = fake yaw (what client shows)
 
 struct nl_jitter_entry_t {
-    float yaw;    // absolute yaw offset for this LUT step
-    int8_t delta; // signed delta to next index
+    float yaw;
+    int   delta;
 };
 
 class c_anti_hit {

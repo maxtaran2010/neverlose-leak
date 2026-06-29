@@ -1,4 +1,5 @@
 #include "anti_hit.hpp"
+#include "nl_config.hpp"
 
 // NL pitch modes (stored as config byte in feature object +28):
 // 0 = down  (-89°)

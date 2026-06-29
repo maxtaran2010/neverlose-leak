@@ -200,7 +200,6 @@
        ════════════════════════════════════════════════════════════════════════ -->
   <ItemGroup>
     <!-- ── Local headers ── -->
-    <ClInclude Include="darkside.hpp" />
     <ClInclude Include="nl_config.hpp" />
     <ClInclude Include="features\no_spread\no_spread.hpp" />
     <ClInclude Include="features\rage_bot\rage_bot.hpp" />

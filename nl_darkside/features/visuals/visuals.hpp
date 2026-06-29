@@ -1,33 +1,47 @@
 #pragma once
-#include "../../darkside.hpp"
 
-// Visuals: darkside skeleton + bbox unchanged, added NL head dot
-// NL head dot = small circle drawn at HITBOX_HEAD world-to-screen projection
+#include "darkside.hpp"
 
-struct stored_player_t {
-    c_cs_player_pawn* m_pawn{};
-    bool m_is_enemy{};
-    float m_health{};
-    std::string m_name{};
-    vec3_t m_origin{};
-    // bbox corners (screen)
-    vec3_t m_top{}, m_bot{};
-    float m_w{}, m_h{};
-    bool m_valid{};
+struct bbox_t {
+	bool m_found = false;
+
+	float x;
+	float y;
+	float width;
+	float height;
 };
 
 class c_visuals {
-    std::vector<stored_player_t> m_players{};
+	struct player_info_t {
+		bool m_valid = false;
 
-    bool calculate_bbox( c_cs_player_pawn* pawn, vec3_t& top, vec3_t& bot,
-                         float& w, float& h );
-    void draw_skeleton( c_cs_player_pawn* pawn, color_t col );
-    void draw_head_dot( c_cs_player_pawn* pawn, color_t col );
-    void handle_player( const stored_player_t& p );
+		int m_handle;
+		int m_health;
+		int m_ammo;
+		int m_max_ammo;
+		int m_armor;
+		int m_money;
 
+		bbox_t m_bbox;
+		std::array<vec3_t, 28> m_bone_positions;
+
+		std::string m_name;
+		std::string m_weapon_name;
+
+		bool m_has_helmet;
+		bool m_has_defuser;
+		bool m_is_scoped;
+	};
+
+	bbox_t calculate_bbox( c_cs_player_pawn* entity );
+
+	std::mutex m_player_mutex;
+	std::unordered_map<int, player_info_t> m_player_map;
+
+	void handle_players( );
 public:
-    void store_players( );
-    void on_paint( );
+	void store_players( );
+	void on_present( );
 };
 
 inline const auto g_visuals = std::make_unique<c_visuals>( );
