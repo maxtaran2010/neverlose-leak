@@ -40,7 +40,8 @@ void c_movement::auto_strafe( c_user_cmd* user_cmd, float old_yaw ) {
          && !user_cmd->pb.mutable_base( )->leftmove( ) )
         return;
 
-    float ideal_rotation = std::min( rad2deg( std::asinf( 15.f / speed_2d ) ), 90.f );
+    float ideal_rotation = (float)rad2deg( std::asinf( 15.f / speed_2d ) );
+    if ( ideal_rotation > 90.f ) ideal_rotation = 90.f;
     float sign = user_cmd->pb.mutable_base( )->legacy_command_number( ) % 2 ? 1.f : -1.f;
 
     bool move_forward  = ( user_cmd->m_button_state.m_button_state & IN_FORWARD )   != 0;
@@ -124,8 +125,9 @@ void c_movement::limit_speed( c_user_cmd* user_cmd, c_cs_player_pawn* local_play
     };
     g_math->angle_vectors( view_angles, forward, right, up );
 
+    float surf_speed = mv->m_max_speed( ) * mv->m_surface_friction( );
     float max_accel = accelerate * INTERVAL_PER_TICK
-        * std::max( 250.f, mv->m_max_speed( ) * mv->m_surface_friction( ) );
+        * ( surf_speed > 250.f ? surf_speed : 250.f );
     float diff      = speed_2d - max_speed;
     float wish_speed = ( diff - max_accel <= 0.f || speed_2d - max_accel - 3.f <= 0.f )
                        ? max_speed : -1.f;

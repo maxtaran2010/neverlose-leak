@@ -246,8 +246,8 @@ vec3_t calculate_camera_pos( vec3_t anchor_pos, float distance, vec3_t view_angl
 inline vec3_t calculate_angles( vec3_t view_pos, vec3_t aim_pos ) {
     vec3_t delta = aim_pos - view_pos;
     return vec3_t{
-        -asinf( delta.z / delta.length( ) ) * _rad_pi,
-        atan2f( delta.y, delta.x ) * _rad_pi,
+        -asinf( delta.z / delta.length( ) ) * (float)_rad_pi,
+        atan2f( delta.y, delta.x ) * (float)_rad_pi,
         0.f
     };
 }
