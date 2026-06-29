@@ -176,7 +176,8 @@ void c_visuals::handle_players( ) {
 				float esp_step = std::clamp( static_cast<float>( esp_health ) / 100.f, 0.f, 1.f );
 
 				float height = ( bbox.height - ( ( bbox.height * static_cast<float>( esp_health ) ) / 100.f ) );
-				height = std::max<float>( std::min<float>( height, bbox.height ), 0.f );
+				if ( height > bbox.height ) height = bbox.height;
+				if ( height < 0.f ) height = 0.f;
 
 				vec3_t bb_outline_min{ bbox.x - 5.f, bbox.y - 1.f };
 				vec3_t bb_outline_max{ 3.f, bbox.height + 2.f };
@@ -213,7 +214,8 @@ void c_visuals::handle_players( ) {
 					float esp_step = std::clamp( static_cast<float>( player_info.m_ammo ) / static_cast<float>( player_info.m_max_ammo ), 0.f, 1.f );
 
 					float width = ( ( bbox.width * static_cast<float>( player_info.m_ammo ) ) / static_cast<float>( player_info.m_max_ammo ) );
-					width = std::max<float>( std::min<float>( width, bbox.width ), 0.f );
+					if ( width > bbox.width ) width = bbox.width;
+					if ( width < 0.f ) width = 0.f;
 
 					vec3_t bb_outline_min{ bbox.x - 1.f, bbox.y + bbox.height + 2.f };
 					vec3_t bb_outline_max{ bbox.width + 2.f, 2.f };
