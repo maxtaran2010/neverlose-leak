@@ -1,0 +1,10 @@
+nl_darkside/nl_darkside.user.props
+nl_darkside/nl_darkside.vcxproj.user
+output/
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.dll
+.vs/

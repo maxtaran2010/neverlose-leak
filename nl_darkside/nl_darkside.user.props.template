@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  nl_darkside user-local path override
+  ─────────────────────────────────────────────────────────────────────────
+  1. Copy this file to nl_darkside.user.props (same directory)
+  2. Edit the DarksideRoot path below to point at YOUR darkside_sdk folder
+  3. nl_darkside.user.props is git-ignored — safe to customise
+
+  Example:
+    <DarksideRoot>C:\Users\max\source\darkside-sdk-fix-main\darkside_sdk</DarksideRoot>
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <DarksideRoot>C:\path\to\darkside-sdk-fix-main\darkside_sdk</DarksideRoot>
+  </PropertyGroup>
+</Project>
